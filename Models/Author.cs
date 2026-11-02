@@ -1,0 +1,15 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FodorPaglesan_Edmond_Lab2.Models
+{
+    public class Author
+    {
+        public int ID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName => FirstName + " " + LastName;
+
+        [ScaffoldColumn(false)]
+        public ICollection<Book>? Books { get; set; }
+    }
+}
