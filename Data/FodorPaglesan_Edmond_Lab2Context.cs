@@ -8,4 +8,6 @@ public class FodorPaglesan_Edmond_Lab2Context(DbContextOptions<FodorPaglesan_Edm
 public DbSet<FodorPaglesan_Edmond_Lab2.Models.Publisher> Publisher { get; set; } = default!;
 
 public DbSet<FodorPaglesan_Edmond_Lab2.Models.Author> Author { get; set; } = default!;
+
+public DbSet<FodorPaglesan_Edmond_Lab2.Models.Category> Category { get; set; } = default!;
 }
