@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FodorPaglesan_Edmond_Lab2.Models;
+using FodorPaglesan_Edmond_Lab2.Models.ViewModels;
 
 namespace FodorPaglesan_Edmond_Lab2.Pages.Categories
 {
@@ -19,10 +15,26 @@ namespace FodorPaglesan_Edmond_Lab2.Pages.Categories
         }
 
         public IList<Category> Category { get;set; } = default!;
+        public CategoryIndexData CategoryIndexData { get; set; } = new CategoryIndexData();
+        public int CategoryID { get; set; }
+        public int BookID { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id, int? bookID)
         {
-            Category = await _context.Category.ToListAsync();
+            CategoryIndexData.Categories = await _context.Category
+                .Include(i => i.BookCategories)
+                    .ThenInclude(c => c.Book)
+                        .ThenInclude(c => c.Author)
+                .OrderBy(i => i.CategoryName)
+                .ToListAsync();
+
+            if (id != null)
+            {
+                CategoryID = id.Value;
+                Category category = CategoryIndexData.Categories
+                    .Where(i => i.ID == id.Value).Single();
+                CategoryIndexData.BookCategories = category.BookCategories;
+            }
         }
     }
 }
